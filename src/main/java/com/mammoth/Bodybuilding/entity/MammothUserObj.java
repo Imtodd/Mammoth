@@ -1,4 +1,4 @@
-package com.mammoth.Bodybuilding.po;
+package com.mammoth.Bodybuilding.entity;
 
 import java.io.Serializable;
 import java.util.Date;
