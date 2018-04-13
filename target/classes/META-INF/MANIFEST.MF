@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: Bodybuilding
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: xingzhaojun
+Implementation-Vendor-Id: com.mammoth
+Build-Jdk: 1.8.0_111
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
+ ot-starter-parent/Bodybuilding
+Created-By: Maven Integration for Eclipse
+
