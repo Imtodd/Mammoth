@@ -10,6 +10,10 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
 
 /**
  * 
@@ -33,8 +37,11 @@ public class MammothUserObj implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	/** 登录名 **/
+	@NotEmpty(message = "用户名不能为空")
 	private String loginName;
 	/** 密码 **/
+	@NotEmpty(message = "密码不能为空")
+	@Length(min = 8,message="密码长度不能少于8位")
 	private String password;
 	/** 昵称 **/
 	private String nickName;
@@ -46,6 +53,9 @@ public class MammothUserObj implements Serializable {
 	private String phoneNum;
 	/** 身份证号码 **/
 	private String IDCard;
+	/** 邮箱地址 **/
+	@Email(message="电子邮件格式不正确")
+	private String email;
 	/** 头像地址 **/
 	private String headIMG;
 	/** 用户简介 **/
@@ -100,6 +110,10 @@ public class MammothUserObj implements Serializable {
 
 	public String getIDCard() {
 		return IDCard;
+	}
+
+	public String getEmail() {
+		return email;
 	}
 
 	public String getHeadIMG() {
@@ -174,6 +188,10 @@ public class MammothUserObj implements Serializable {
 		IDCard = iDCard;
 	}
 
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	public void setHeadIMG(String headIMG) {
 		this.headIMG = headIMG;
 	}
@@ -221,6 +239,7 @@ public class MammothUserObj implements Serializable {
 		result = prime * result + ((IDCard == null) ? 0 : IDCard.hashCode());
 		result = prime * result + ((birthday == null) ? 0 : birthday.hashCode());
 		result = prime * result + ((createTime == null) ? 0 : createTime.hashCode());
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + ((ext1 == null) ? 0 : ext1.hashCode());
 		result = prime * result + ((ext2 == null) ? 0 : ext2.hashCode());
 		result = prime * result + ((ext3 == null) ? 0 : ext3.hashCode());
@@ -262,6 +281,11 @@ public class MammothUserObj implements Serializable {
 			if (other.createTime != null)
 				return false;
 		} else if (!createTime.equals(other.createTime))
+			return false;
+		if (email == null) {
+			if (other.email != null)
+				return false;
+		} else if (!email.equals(other.email))
 			return false;
 		if (ext1 == null) {
 			if (other.ext1 != null)
@@ -342,9 +366,9 @@ public class MammothUserObj implements Serializable {
 	public String toString() {
 		return "MammothUserObj [id=" + id + ", loginName=" + loginName + ", password=" + password + ", nickName="
 				+ nickName + ", surName=" + surName + ", fullName=" + fullName + ", phoneNum=" + phoneNum + ", IDCard="
-				+ IDCard + ", headIMG=" + headIMG + ", introduce=" + introduce + ", createTime=" + createTime
-				+ ", updateTime=" + updateTime + ", birthday=" + birthday + ", ext1=" + ext1 + ", ext2=" + ext2
-				+ ", ext3=" + ext3 + ", ext4=" + ext4 + ", ext5=" + ext5 + "]";
+				+ IDCard + ", email=" + email + ", headIMG=" + headIMG + ", introduce=" + introduce + ", createTime="
+				+ createTime + ", updateTime=" + updateTime + ", birthday=" + birthday + ", ext1=" + ext1 + ", ext2="
+				+ ext2 + ", ext3=" + ext3 + ", ext4=" + ext4 + ", ext5=" + ext5 + "]";
 	}
 
 }
