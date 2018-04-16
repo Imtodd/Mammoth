@@ -34,6 +34,7 @@ public class MammothUserController {
 		@RequestMapping(value="/",method=RequestMethod.GET)
 		public String homePage(Model model) {
 			model.addAttribute("user", new MammothUserObj());
+			model.addAttribute("resultObj", null);
 			return "home";
 		}
 		
@@ -50,6 +51,8 @@ public class MammothUserController {
 		public String register(@ModelAttribute  @Valid MammothUserObj user,BindingResult result,@RequestParam String checkPass,Model model) {
 			/**校验用户**/
 			ResultObj resultObj = CurrencySaas.checkFieldError(result);
+			/**友好提示**/
+			resultObj.setMessager(resultObj.getMessager()+",请重新注册！");
 			if(!resultObj.isFlag()) {
 				model.addAttribute("user",new MammothUserObj());
 				model.addAttribute("resultObj", resultObj);

@@ -27,14 +27,10 @@ public class CurrencySaas {
 		ResultObj resultObj = new ResultObj();
 		if (result.hasErrors()) {
 			List<ObjectError> allErrors = result.getAllErrors();
-			List<FieldError> fieldErrors = new ArrayList<>();
-			for (ObjectError objectError : allErrors) {
-				fieldErrors.add((FieldError) objectError);
-			}
+			ObjectError objectError = allErrors.get(allErrors.size()-1);
 			resultObj.setCode(-1);
-			resultObj.setMessager("参数传入错误");
+			resultObj.setMessager(objectError.getDefaultMessage());
 			resultObj.setFlag(false);
-			resultObj.setResult(fieldErrors);
 		}
 		return resultObj;
 	}
