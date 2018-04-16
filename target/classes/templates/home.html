@@ -91,8 +91,8 @@
 			</form>
 			<!-- modal -->
 			<!-- 注册-->
-			<form class="form-login" action="#" th:action="@{/register}"
-				th:object="${user}" method="post" id="registForm">
+			<form class="#" action="#" th:action="@{/register}"
+				th:object="${user}" method="post" id="registForm" role="form">
 				<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog"
 					tabindex="-1" id="myRegister" class="modal fade">
 					<div class="modal-dialog">
@@ -105,48 +105,48 @@
 							<div class="modal-body">
 								<fieldset>
 									<div class="form-group">
-										<label class="col-lg-3 control-label">用户名</label>
-										<div class="col-lg-5">
+										<label class="control-label">用户名</label>
+										<div>
 											<input type="text" th:field="*{loginName}"
 												placeholder="登录用户名" autocomplete="off"
 												class="form-control placeholder-no-fix">
 										</div>
 									</div>
-									<div class="form-group">
-										<label class="col-lg-3 control-label">密码</label>
-										<div class="col-lg-5">
+									<div class="form-group" style="height: 57.5667">
+										<label class="control-label">密码</label>
+										<div>
 											<input type="password" th:field="*{password}"
 												placeholder="密码" autocomplete="off"
 												class="form-control placeholder-no-fix">
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-lg-3 control-label">确认密码</label>
-										<div class="col-lg-5">
+										<label class="control-label">确认密码</label>
+										<div>
 											<input type="password" name="checkPass"
 												placeholder="确认密码" autocomplete="off"
 												class="form-control placeholder-no-fix">
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-lg-3 control-label">电子邮件</label>
-										<div class="col-lg-5">
+										<label class="control-label">电子邮件</label>
+										<div>
 											<input type="text" th:field="*{email}"
 												placeholder="确认密码" autocomplete="off"
 												class="form-control placeholder-no-fix">
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-lg-3 control-label">手机号</label>
-										<div class="col-lg-5">
+										<label class="control-label">手机号</label>
+										<div>
 											<input type="text" th:field="*{phoneNum}"
 												placeholder="手机号" autocomplete="off"
 												class="form-control placeholder-no-fix">
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-lg-3 control-label">昵称</label>
-										<div class="col-lg-5">
+										<label class="control-label">昵称</label>
+										<div>
 											<input type="text" th:field="*{nickName}"
 												placeholder="昵称" autocomplete="off"
 												class="form-control placeholder-no-fix">
@@ -170,6 +170,11 @@
 		$(document).ready(function() {
 			$('#registForm').bootstrapValidator({
 				message : '这个值无效',
+				feedbackIcons: {
+		            valid: 'glyphicon glyphicon-ok',
+		            invalid: 'glyphicon glyphicon-remove',
+		            validating: 'glyphicon glyphicon-refresh'
+		        },
 				fields : {
 					loginName : {
 						message : '用户名无效',
