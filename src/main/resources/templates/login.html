@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorator="home">
+	layout:decorator="login">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,26 +14,31 @@
 
 <!-- Bootstrap core CSS -->
 <link th:href="@{/global/assets/css/bootstrap.css}" rel="stylesheet">
-<link th:href="@{/global/dist/css/bootstrapValidator.css}" rel="stylesheet">
+<link th:href="@{/global/dist/css/bootstrapValidator.css}"
+	rel="stylesheet">
 <!--external css-->
 <link th:href="@{/global/assets/font-awesome/css/font-awesome.css}"
 	rel="stylesheet" />
 
 <!-- Custom styles for this template -->
 <link th:href="@{/global/assets/css/style.css}" rel="stylesheet">
-<link th:href="@{/global/assets/css/style-responsive.css}" rel="stylesheet">
+<link th:href="@{/global/assets/css/style-responsive.css}"
+	rel="stylesheet">
 
 <!-- js placed at the end of the document so the pages load faster -->
 <script src="/global/assets/js/jquery.js"></script>
 <script src="/global/assets/js/bootstrap.min.js"></script>
 <!-- bootstrap validate js -->
-<script type="text/javascript" src="/global/dist/js/bootstrapValidator.js"></script>
+<script type="text/javascript"
+	src="/global/dist/js/bootstrapValidator.js"></script>
 
 </head>
 
 <body>
 	<div th:if="${resultObj != null}" class="alert alert-warning">
-		<a th:if="${resultObj.flag == false}"  href="#" class="close" data-dismiss="alert"> &times; </a> <strong>警告！</strong><span th:text="${resultObj.messager}"></span>
+		<a th:if="${resultObj.flag == false}" href="#" class="close"
+			data-dismiss="alert"> &times; </a> <strong>警告！</strong><span
+			th:text="${resultObj.messager}"></span>
 	</div>
 	<!-- **********************************************************************************************************************************************************
       MAIN CONTENT
@@ -41,16 +46,26 @@
 
 	<div id="login-page">
 		<div class="container">
-			<form class="form-login" action="index.html" method="post">
+			<form class="form-login" id="loginForm" method="post"
+				th:action="@{/login}">
 				<h2 class="form-login-heading">现在登录</h2>
 				<div class="login-wrap">
-					<input type="text" class="form-control" name="loginUsername"
-						placeholder="用户名" autofocus> <br> <input
-						type="password" name="loginPassword" class="form-control"
-						placeholder="密码"> <label class="checkbox"> <span
-						class="pull-right"> <a data-toggle="modal"
-							href="login.html#myModal"> 忘记密码?</a>
-
+					<fieldset>
+						<div class="form-group">
+							<div>
+								<input type="text" class="form-control" name="loginUsername"
+									placeholder="用户名" autofocus>
+							</div>
+						</div>
+						<div class="form-group">
+							<div>
+								<input type="password" name="loginPassword" class="form-control"
+									placeholder="密码">
+							</div>
+						</div>
+					</fieldset>
+					<label class="checkbox"> <span class="pull-right"> <a
+							data-toggle="modal" href="login.html#myModal"> 忘记密码?</a>
 					</span>
 					</label>
 					<button class="btn btn-theme btn-block" type="submit">
@@ -66,7 +81,8 @@
 			</form>
 
 			<!-- Modal -->
-			<form class="form-login" action="index.html" method="post">
+			<form class="form-login" id="forgetForm" th:action="@{/forget}"
+				method="post" role="form">
 				<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog"
 					tabindex="-1" id="myModal" class="modal fade">
 					<div class="modal-dialog">
@@ -77,10 +93,15 @@
 								<h4 class="modal-title">忘记密码?</h4>
 							</div>
 							<div class="modal-body">
-								<p>输入下面的用户名重新设置密码。</p>
-								<input type="text" name="userNameForget" placeholder="用户名"
-									autocomplete="off" class="form-control placeholder-no-fix">
-
+								<fieldset>
+									<div class="form-group">
+										<label class="control-label">输入下面的用户名重新设置密码。</label>
+										<div>
+											<input type="text" name="userNameForget" placeholder="登录用户名"
+												autocomplete="off" class="form-control placeholder-no-fix">
+										</div>
+									</div>
+								</fieldset>
 							</div>
 							<div class="modal-footer">
 								<button data-dismiss="modal" class="btn btn-default"
@@ -166,6 +187,74 @@
 	</div>
 	<script type="text/javascript">
 		$(document).ready(function() {
+			//登录验证
+			$("#loginForm").bootstrapValidator({
+				message : '这个值无效',
+				feedbackIcons : {
+					valid : 'glyphicon glyphicon-ok',
+					invalid : 'glyphicon glyphicon-remove',
+					validating : 'glyphicon glyphicon-refresh'
+				},
+				fields : {
+					loginUsername : {
+						message : '用户名无效',
+						validators : {
+							notEmpty : {
+								message : '用户名是必填，不能为空'
+							},
+							stringLength : {
+								min : 6,
+								max : 30,
+								message : '用户名必须大于6，长度小于30个字符。'
+							},
+							regexp : {
+								regexp : /^[a-zA-Z0-9_\.]+$/,
+								message : '用户名只能由字母、数字、点和下划线组成。'
+							}
+						}
+					},
+					loginPassword : {
+						validators : {
+							notEmpty : {
+								message : '密码是必填的，不能为空'
+							},
+							stringLength : {
+								min : 8,
+								message : '密码长度不能少于8位'
+							}
+						}
+					}
+				}
+			});
+			//忘记密码验证
+			$("#forgetForm").bootstrapValidator({
+				message : '这个值无效',
+				feedbackIcons : {
+					valid : 'glyphicon glyphicon-ok',
+					invalid : 'glyphicon glyphicon-remove',
+					validating : 'glyphicon glyphicon-refresh'
+				},
+				fields : {
+					userNameForget : {
+						message : '用户名无效',
+						validators : {
+							notEmpty : {
+								message : '用户名是必填，不能为空'
+							},
+							stringLength : {
+								min : 6,
+								max : 30,
+								message : '用户名必须大于6，长度小于30个字符。'
+							},
+							regexp : {
+								regexp : /^[a-zA-Z0-9_\.]+$/,
+								message : '用户名只能由字母、数字、点和下划线组成。'
+							}
+						}
+					}
+				}
+			});
+			//注册验证
 			$('#registForm').bootstrapValidator({
 				message : '这个值无效',
 				feedbackIcons : {
