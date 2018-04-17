@@ -196,6 +196,10 @@
 							notEmpty : {
 								message : '密码是必填的，不能为空'
 							},
+							stringLength : {
+								min : 8,
+								message : '密码长度不能少于8位'
+							},
 							identical : {
 								field : 'checkPass',
 								message : '密码和确认密码不一致。'

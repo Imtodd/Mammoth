@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mammoth.Bodybuilding.entity.MammothUserObj;
+import com.mammoth.Bodybuilding.entity.SysUserObj;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -27,7 +27,7 @@ public class MobileMammothUserController {
 		 */
 		@ApiOperation(value="移动端注册",notes="移动端用户注册")
 		@RequestMapping(value="/appregister",method=RequestMethod.POST)
-		public String appRegister(MammothUserObj user,String checkPass) {
+		public String appRegister(SysUserObj user,String checkPass) {
 			return "";
 		}
 }

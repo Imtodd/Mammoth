@@ -1,12 +1,18 @@
 package com.mammoth.Bodybuilding.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -14,19 +20,22 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * 
- * @title : MammothUserObj
- * @description : 猛犸健身 用户实体类
- * @company : com.mammoth.Bodybuilding.po
+ * @title : SysUserObj
+ * @description : 用户实体类
+ * @company : com.mammoth.Bodybuilding.entity
  * @project Bodybuilding
  * @author xingzhaojun
  * @date 2018年4月13日 上午10:39:24
  */
 @Entity
 @Table(name = "MAMMOTH_BODYBUILDING_USER")
-public class MammothUserObj implements Serializable {
+public class SysUserObj implements Serializable, UserDetails {
 
 	/**
 	 * 序列号
@@ -35,13 +44,13 @@ public class MammothUserObj implements Serializable {
 	/** 主键id **/
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Long id;
 	/** 登录名 **/
 	@NotEmpty(message = "用户名不能为空")
 	private String loginName;
 	/** 密码 **/
 	@NotEmpty(message = "密码不能为空")
-	@Length(min = 8,message="密码长度不能少于8位")
+	@Length(min = 8, message = "密码长度不能少于8位")
 	private String password;
 	/** 昵称 **/
 	private String nickName;
@@ -54,7 +63,7 @@ public class MammothUserObj implements Serializable {
 	/** 身份证号码 **/
 	private String IDCard;
 	/** 邮箱地址 **/
-	@Email(message="电子邮件格式不正确")
+	@Email(message = "电子邮件格式不正确")
 	private String email;
 	/** 头像地址 **/
 	private String headIMG;
@@ -69,6 +78,8 @@ public class MammothUserObj implements Serializable {
 	/** 生日日期 **/
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date birthday;
+	/** 终端类型 **/
+	private String ClientType;
 	/** 扩展字段1 **/
 	private String ext1;
 	/** 扩展字段2 **/
@@ -79,17 +90,89 @@ public class MammothUserObj implements Serializable {
 	private String ext4;
 	/** 扩展字段5 **/
 	private String ext5;
+	/** 配置用户和角色的多对多关系 **/
+	@ManyToMany(cascade = { CascadeType.REFRESH }, fetch = FetchType.EAGER)
+	private List<SysRole> sysRoles;
 
-	public int getId() {
+	public SysUserObj() {
+
+	}
+
+	public SysUserObj(Long id, @NotEmpty(message = "用户名不能为空") String loginName,
+			@NotEmpty(message = "密码不能为空") @Length(min = 8, message = "密码长度不能少于8位") String password, String nickName,
+			String surName, String fullName, String phoneNum, String iDCard, @Email(message = "电子邮件格式不正确") String email,
+			String headIMG, String introduce, Date createTime, Date updateTime, Date birthday, String clientType,
+			String ext1, String ext2, String ext3, String ext4, String ext5, List<SysRole> sysRoles) {
+		super();
+		this.id = id;
+		this.loginName = loginName;
+		this.password = password;
+		this.nickName = nickName;
+		this.surName = surName;
+		this.fullName = fullName;
+		this.phoneNum = phoneNum;
+		IDCard = iDCard;
+		this.email = email;
+		this.headIMG = headIMG;
+		this.introduce = introduce;
+		this.createTime = createTime;
+		this.updateTime = updateTime;
+		this.birthday = birthday;
+		ClientType = clientType;
+		this.ext1 = ext1;
+		this.ext2 = ext2;
+		this.ext3 = ext3;
+		this.ext4 = ext4;
+		this.ext5 = ext5;
+		this.sysRoles = sysRoles;
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		List<GrantedAuthority> auths = new ArrayList<>();
+		List<SysRole> roles = this.getSysRoles();
+		for (SysRole role : roles) {
+			auths.add(new SimpleGrantedAuthority(role.getName()));
+		}
+		return auths;
+	}
+
+	@Override
+	public String getPassword() {
+		return password;
+	}
+
+	@Override
+	public String getUsername() {
+		return loginName;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
+
+	public Long getId() {
 		return id;
 	}
 
 	public String getLoginName() {
 		return loginName;
-	}
-
-	public String getPassword() {
-		return password;
 	}
 
 	public String getNickName() {
@@ -136,6 +219,10 @@ public class MammothUserObj implements Serializable {
 		return birthday;
 	}
 
+	public String getClientType() {
+		return ClientType;
+	}
+
 	public String getExt1() {
 		return ext1;
 	}
@@ -156,7 +243,11 @@ public class MammothUserObj implements Serializable {
 		return ext5;
 	}
 
-	public void setId(int id) {
+	public List<SysRole> getSysRoles() {
+		return sysRoles;
+	}
+
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -212,6 +303,10 @@ public class MammothUserObj implements Serializable {
 		this.birthday = birthday;
 	}
 
+	public void setClientType(String clientType) {
+		ClientType = clientType;
+	}
+
 	public void setExt1(String ext1) {
 		this.ext1 = ext1;
 	}
@@ -232,10 +327,15 @@ public class MammothUserObj implements Serializable {
 		this.ext5 = ext5;
 	}
 
+	public void setSysRoles(List<SysRole> sysRoles) {
+		this.sysRoles = sysRoles;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((ClientType == null) ? 0 : ClientType.hashCode());
 		result = prime * result + ((IDCard == null) ? 0 : IDCard.hashCode());
 		result = prime * result + ((birthday == null) ? 0 : birthday.hashCode());
 		result = prime * result + ((createTime == null) ? 0 : createTime.hashCode());
@@ -247,13 +347,14 @@ public class MammothUserObj implements Serializable {
 		result = prime * result + ((ext5 == null) ? 0 : ext5.hashCode());
 		result = prime * result + ((fullName == null) ? 0 : fullName.hashCode());
 		result = prime * result + ((headIMG == null) ? 0 : headIMG.hashCode());
-		result = prime * result + id;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((introduce == null) ? 0 : introduce.hashCode());
 		result = prime * result + ((loginName == null) ? 0 : loginName.hashCode());
 		result = prime * result + ((nickName == null) ? 0 : nickName.hashCode());
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
 		result = prime * result + ((phoneNum == null) ? 0 : phoneNum.hashCode());
 		result = prime * result + ((surName == null) ? 0 : surName.hashCode());
+		result = prime * result + ((sysRoles == null) ? 0 : sysRoles.hashCode());
 		result = prime * result + ((updateTime == null) ? 0 : updateTime.hashCode());
 		return result;
 	}
@@ -266,7 +367,12 @@ public class MammothUserObj implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		MammothUserObj other = (MammothUserObj) obj;
+		SysUserObj other = (SysUserObj) obj;
+		if (ClientType == null) {
+			if (other.ClientType != null)
+				return false;
+		} else if (!ClientType.equals(other.ClientType))
+			return false;
 		if (IDCard == null) {
 			if (other.IDCard != null)
 				return false;
@@ -322,7 +428,10 @@ public class MammothUserObj implements Serializable {
 				return false;
 		} else if (!headIMG.equals(other.headIMG))
 			return false;
-		if (id != other.id)
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
 			return false;
 		if (introduce == null) {
 			if (other.introduce != null)
@@ -354,6 +463,11 @@ public class MammothUserObj implements Serializable {
 				return false;
 		} else if (!surName.equals(other.surName))
 			return false;
+		if (sysRoles == null) {
+			if (other.sysRoles != null)
+				return false;
+		} else if (!sysRoles.equals(other.sysRoles))
+			return false;
 		if (updateTime == null) {
 			if (other.updateTime != null)
 				return false;
@@ -364,11 +478,12 @@ public class MammothUserObj implements Serializable {
 
 	@Override
 	public String toString() {
-		return "MammothUserObj [id=" + id + ", loginName=" + loginName + ", password=" + password + ", nickName="
-				+ nickName + ", surName=" + surName + ", fullName=" + fullName + ", phoneNum=" + phoneNum + ", IDCard="
-				+ IDCard + ", email=" + email + ", headIMG=" + headIMG + ", introduce=" + introduce + ", createTime="
-				+ createTime + ", updateTime=" + updateTime + ", birthday=" + birthday + ", ext1=" + ext1 + ", ext2="
-				+ ext2 + ", ext3=" + ext3 + ", ext4=" + ext4 + ", ext5=" + ext5 + "]";
+		return "SysUserObj [id=" + id + ", loginName=" + loginName + ", password=" + password + ", nickName=" + nickName
+				+ ", surName=" + surName + ", fullName=" + fullName + ", phoneNum=" + phoneNum + ", IDCard=" + IDCard
+				+ ", email=" + email + ", headIMG=" + headIMG + ", introduce=" + introduce + ", createTime="
+				+ createTime + ", updateTime=" + updateTime + ", birthday=" + birthday + ", ClientType=" + ClientType
+				+ ", ext1=" + ext1 + ", ext2=" + ext2 + ", ext3=" + ext3 + ", ext4=" + ext4 + ", ext5=" + ext5
+				+ ", sysRoles=" + sysRoles + "]";
 	}
 
 }
