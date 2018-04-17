@@ -37,8 +37,8 @@ public class MammothUserController {
 		 * pc端首页位置
 		 * @return 首页映射
 		 */
-		@ApiOperation(value="首页",notes="pc端首页位置")
-		@RequestMapping(value="/",method=RequestMethod.GET)
+		@ApiOperation(value="登录页面",notes="pc端首页位置")
+		@RequestMapping(value="/login",method=RequestMethod.GET)
 		public String loginPage(Model model) {
 			model.addAttribute("user", new SysUserObj());
 			model.addAttribute("resultObj", null);
@@ -58,8 +58,6 @@ public class MammothUserController {
 		public String register(@ModelAttribute  @Valid SysUserObj user,BindingResult result,@RequestParam String checkPass,Model model) {
 			/**调用service**/
 			ResultObj resultObj = userService.registUser(user, checkPass,ClientType.PCMANAGETYPE,result);
-			/**友好提示**/
-			resultObj.setMessager(resultObj.getMessager()+",请重新注册！");
 			if(!resultObj.isFlag()) {
 				model.addAttribute("user",new SysUserObj());
 				model.addAttribute("resultObj", resultObj);

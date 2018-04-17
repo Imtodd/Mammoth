@@ -1,5 +1,7 @@
 package com.mammoth.Bodybuilding.service.Impl;
 
+import java.util.Date;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,6 +89,16 @@ public class MammothUserServiceImpl implements IMammothUserService, UserDetailsS
 				logger.error(resultObj.getMessager());
 				return resultObj;
 			}
+			/**判断用户名是否重复**/
+			SysUserObj temp = userRespository.findByUsername(user.getLoginName());
+			if(temp!=null) {
+				resultObj.setCode(-1);
+				resultObj.setFlag(false);
+				resultObj.setMessager("用户名已存在，请稍后重新注册!");
+				/** 记录错误日志 **/
+				logger.error(resultObj.getMessager());
+				return resultObj;
+			}
 			/** 验证结束 **/
 			/** 密码加密 **/
 			user.setPassword(MD5Util.encode(user.getPassword()));
@@ -94,6 +106,10 @@ public class MammothUserServiceImpl implements IMammothUserService, UserDetailsS
 			try {
 				/** 设置当前用户终端 **/
 				user.setClientType(clientType);
+				/**设置创建时间**/
+				user.setCreateTime(new Date());
+				/**设置默认头像**/
+				user.setHeadIMG("/global/assets/img/ui-sam.jpg");
 				SysUserObj save = userRespository.save(user);
 				resultObj.setCode(1);
 				resultObj.setFlag(true);
