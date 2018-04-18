@@ -46,10 +46,10 @@ public class SysUserObj implements Serializable, UserDetails {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	/** 登录名 **/
-	@NotEmpty(message = "用户名不能为空")
+	@NotEmpty(message = "警告!用户名不能为空")
 	private String loginName;
 	/** 密码 **/
-	@NotEmpty(message = "密码不能为空")
+	@NotEmpty(message = "警告!密码不能为空")
 	@Length(min = 8, message = "密码长度不能少于8位")
 	private String password;
 	/** 昵称 **/
@@ -63,7 +63,7 @@ public class SysUserObj implements Serializable, UserDetails {
 	/** 身份证号码 **/
 	private String IDCard;
 	/** 邮箱地址 **/
-	@Email(message = "电子邮件格式不正确")
+	@Email(message = "警告!电子邮件格式不正确")
 	private String email;
 	/** 头像地址 **/
 	private String headIMG;
@@ -94,10 +94,59 @@ public class SysUserObj implements Serializable, UserDetails {
 	@ManyToMany(cascade = { CascadeType.REFRESH }, fetch = FetchType.EAGER)
 	private List<SysRole> sysRoles;
 
+	/**
+	 * 无参构造
+	 */
 	public SysUserObj() {
 
 	}
 
+	/**
+	 * 有参构造
+	 * 
+	 * @param id
+	 *            主键id
+	 * @param loginName
+	 *            登陆名
+	 * @param password
+	 *            密码
+	 * @param nickName
+	 *            昵称
+	 * @param surName
+	 *            姓氏
+	 * @param fullName
+	 *            名称
+	 * @param phoneNum
+	 *            手机号
+	 * @param iDCard
+	 *            身份证
+	 * @param email
+	 *            电子邮件
+	 * @param headIMG
+	 *            头像
+	 * @param introduce
+	 *            简介
+	 * @param createTime
+	 *            创建时间
+	 * @param updateTime
+	 *            修改时间
+	 * @param birthday
+	 *            生日
+	 * @param clientType
+	 *            终端类型
+	 * @param ext1
+	 *            扩展字段1
+	 * @param ext2
+	 *            扩展字段2
+	 * @param ext3
+	 *            扩展字段3
+	 * @param ext4
+	 *            扩展字段4
+	 * @param ext5
+	 *            扩展字段5
+	 * @param sysRoles
+	 *            权限
+	 */
 	public SysUserObj(Long id, @NotEmpty(message = "用户名不能为空") String loginName,
 			@NotEmpty(message = "密码不能为空") @Length(min = 8, message = "密码长度不能少于8位") String password, String nickName,
 			String surName, String fullName, String phoneNum, String iDCard, @Email(message = "电子邮件格式不正确") String email,

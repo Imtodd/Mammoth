@@ -37,7 +37,7 @@
 <body>
 	<div th:if="${resultObj != null}" class="alert alert-warning">
 		<a th:if="${resultObj.flag == false}" href="#" class="close"
-			data-dismiss="alert"> &times; </a> <strong>警告！</strong><span
+			data-dismiss="alert"> &times; </a><span
 			th:text="${resultObj.messager}"></span>
 	</div>
 	<!-- **********************************************************************************************************************************************************

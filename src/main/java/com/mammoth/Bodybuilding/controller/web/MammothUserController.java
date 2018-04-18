@@ -61,9 +61,13 @@ public class MammothUserController {
 			if(!resultObj.isFlag()) {
 				model.addAttribute("user",new SysUserObj());
 				model.addAttribute("resultObj", resultObj);
-				return "login";
+				
 			}
 			/**注册成功,跳转成功页面**/
-			return "home";
+			return "login";
 		};
+		
+		public String login(@RequestParam String loginUsername,@RequestParam String loginPassword){
+			return "";
+		}
 }

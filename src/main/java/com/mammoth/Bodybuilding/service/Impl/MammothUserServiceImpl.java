@@ -84,7 +84,7 @@ public class MammothUserServiceImpl implements IMammothUserService, UserDetailsS
 			if (!user.getPassword().equals(checkPass)) {
 				resultObj.setCode(-1);
 				resultObj.setFlag(false);
-				resultObj.setMessager("密码与确认密码不一致，请稍后重新注册!");
+				resultObj.setMessager("警告!密码与确认密码不一致，请稍后重新注册!");
 				/** 记录错误日志 **/
 				logger.error(resultObj.getMessager());
 				return resultObj;
@@ -94,7 +94,7 @@ public class MammothUserServiceImpl implements IMammothUserService, UserDetailsS
 			if(temp!=null) {
 				resultObj.setCode(-1);
 				resultObj.setFlag(false);
-				resultObj.setMessager("用户名已存在，请稍后重新注册!");
+				resultObj.setMessager("警告!用户名已存在，请稍后重新注册!");
 				/** 记录错误日志 **/
 				logger.error(resultObj.getMessager());
 				return resultObj;
@@ -113,14 +113,14 @@ public class MammothUserServiceImpl implements IMammothUserService, UserDetailsS
 				SysUserObj save = userRespository.save(user);
 				resultObj.setCode(1);
 				resultObj.setFlag(true);
-				resultObj.setMessager("用户注册成功!");
+				resultObj.setMessager("恭喜!用户注册成功!");
 				resultObj.setResult(save);
 				/** 记录错误日志 **/
 				logger.info(resultObj.getMessager());
 			} catch (Exception e) {
 				resultObj.setCode(-1);
 				resultObj.setFlag(false);
-				resultObj.setMessager("用户数据保存异常，请稍后重新注册!");
+				resultObj.setMessager("警告!用户数据保存异常，请稍后重新注册!");
 				/** 记录错误日志 **/
 				logger.error(resultObj.getMessager());
 				// e.printStackTrace();
@@ -139,6 +139,18 @@ public class MammothUserServiceImpl implements IMammothUserService, UserDetailsS
 			throw new UsernameNotFoundException("用户名不存在");
 		}
 		return sysUser;
+	}
+
+	@Override
+	public ResultObj LoginUser(String loginName, String password) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ResultObj forgetPassword(String loginName) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
