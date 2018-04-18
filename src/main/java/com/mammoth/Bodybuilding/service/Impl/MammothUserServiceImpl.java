@@ -51,7 +51,6 @@ public class MammothUserServiceImpl implements IMammothUserService, UserDetailsS
 	public ResultObj registUser(SysUserObj user, Object... objects) {
 		/** 初始化临时变量 **/
 		ResultObj resultObj = new ResultObj();
-		@SuppressWarnings("unused")
 		String clientType = new String();
 		String checkPass = new String();
 		/** 获取数据并校验 **/
@@ -89,9 +88,9 @@ public class MammothUserServiceImpl implements IMammothUserService, UserDetailsS
 				logger.error(resultObj.getMessager());
 				return resultObj;
 			}
-			/**判断用户名是否重复**/
+			/** 判断用户名是否重复 **/
 			SysUserObj temp = userRespository.findByUsername(user.getLoginName());
-			if(temp!=null) {
+			if (temp != null) {
 				resultObj.setCode(-1);
 				resultObj.setFlag(false);
 				resultObj.setMessager("警告!用户名已存在，请稍后重新注册!");
@@ -106,14 +105,14 @@ public class MammothUserServiceImpl implements IMammothUserService, UserDetailsS
 			try {
 				/** 设置当前用户终端 **/
 				user.setClientType(clientType);
-				/**设置创建时间**/
+				/** 设置创建时间 **/
 				user.setCreateTime(new Date());
-				/**设置默认头像**/
+				/** 设置默认头像 **/
 				user.setHeadIMG("/global/assets/img/ui-sam.jpg");
 				SysUserObj save = userRespository.save(user);
 				resultObj.setCode(1);
 				resultObj.setFlag(true);
-				resultObj.setMessager("恭喜!用户注册成功!");
+				resultObj.setMessager("恭喜!用户注册成功,请登录");
 				resultObj.setResult(save);
 				/** 记录错误日志 **/
 				logger.info(resultObj.getMessager());
@@ -141,12 +140,28 @@ public class MammothUserServiceImpl implements IMammothUserService, UserDetailsS
 		return sysUser;
 	}
 
+	/**
+	 * 登录接口
+	 * 
+	 * @param loginName
+	 *            用户名
+	 * @param password
+	 *            密码
+	 * @return
+	 */
 	@Override
 	public ResultObj LoginUser(String loginName, String password) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	/**
+	 * 忘记密码
+	 * 
+	 * @param loginName
+	 *            登录名
+	 * @return
+	 */
 	@Override
 	public ResultObj forgetPassword(String loginName) {
 		// TODO Auto-generated method stub
