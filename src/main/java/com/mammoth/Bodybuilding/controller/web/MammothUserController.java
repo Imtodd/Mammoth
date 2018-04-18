@@ -1,4 +1,4 @@
-package com.mammoth.Bodybuilding.webController;
+package com.mammoth.Bodybuilding.controller.web;
 
 import javax.validation.Valid;
 

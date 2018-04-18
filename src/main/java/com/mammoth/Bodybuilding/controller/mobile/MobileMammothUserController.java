@@ -1,4 +1,4 @@
-package com.mammoth.Bodybuilding.mobileController;
+package com.mammoth.Bodybuilding.controller.mobile;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

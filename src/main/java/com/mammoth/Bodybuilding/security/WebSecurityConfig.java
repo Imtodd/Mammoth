@@ -1,4 +1,4 @@
-package com.mammoth.Bodybuilding.util;
+package com.mammoth.Bodybuilding.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.mammoth.Bodybuilding.service.Impl.MammothUserServiceImpl;
+import com.mammoth.Bodybuilding.util.MD5Util;
 
 /**
  * 
@@ -51,22 +52,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		// 允许所有用户访问"/"和"/home"
-		http.authorizeRequests().antMatchers("/mobile/**", "/register").permitAll()
-				// 其他地址的访问均需验证权限
-				.anyRequest().authenticated().and().formLogin().loginPage("/login") // 指定登录页是"/login"
-				.defaultSuccessUrl("/home") // 登录成功后默认跳转到"list"
-				.permitAll().and().logout().logoutSuccessUrl("/login") // 退出登录后的默认url是"/home"
-				.permitAll();
+		/** 允许所有用户访问 **/
+		http.authorizeRequests().antMatchers("/mobile/**", "/register", "/forget").permitAll()
+				/** 其他地址的访问均需验证权限 **/
+				.anyRequest().authenticated().and()
+				/** 指定登录页是"/login" **/
+				.formLogin().loginPage("/login")
+				/** 登录成功后默认跳转到"home" **/
+				.defaultSuccessUrl("/home")
+				/** 退出登录后的默认url是"/home" **/
+				.permitAll().and().logout().logoutSuccessUrl("/login").permitAll();
 	}
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-		// 解决静态资源被拦截的问题
-		web.ignoring().antMatchers("/global/**","/webjars/**", "/v2/api-docs", // swagger api json
-				"/swagger-resources/configuration/ui", // 用来获取支持的动作
-				"/swagger-resources", // 用来获取api-docs的URI
-				"/swagger-resources/configuration/security", // 安全选项
-				"/swagger-ui.html");
+		/** 解决静态资源被拦截的问题 **/
+		web.ignoring().antMatchers("/global/**", "/webjars/**", "/v2/api-docs", "/swagger-resources/configuration/ui",
+				"/swagger-resources", "/swagger-resources/configuration/security", "/swagger-ui.html");
 	}
 }
