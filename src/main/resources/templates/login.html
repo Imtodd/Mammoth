@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorator="login">
+	layout:decorator="login" lang="zh_CN">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -40,6 +40,12 @@
 			data-dismiss="alert"> &times; </a><span
 			th:text="${resultObj.messager}"></span>
 	</div>
+	<div th:if="${param.error}" class="alert alert-warning">
+		<a href="#" class="close"
+			data-dismiss="alert"> &times; </a><span
+			th:text="${session.SPRING_SECURITY_LAST_EXCEPTION.message}"></span><span>,用户名或密码不正确</span>
+	</div>
+
 	<!-- **********************************************************************************************************************************************************
       MAIN CONTENT
       *********************************************************************************************************************************************************** -->

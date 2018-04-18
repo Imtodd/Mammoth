@@ -1,5 +1,6 @@
 package com.mammoth.Bodybuilding.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -8,6 +9,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -33,9 +36,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		return new MammothUserServiceImpl();
 	}
 
+	@Bean
+	public SessionRegistry getSessionRegistry() {
+		SessionRegistry sessionRegistry = new SessionRegistryImpl();
+		return sessionRegistry;
+	}
+
+	@Autowired
+	SessionRegistry sessionRegistry;
+
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(customerUserService());
 		auth.userDetailsService(customerUserService()).passwordEncoder(new PasswordEncoder() {
 
 			@Override
@@ -52,16 +63,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		/** 允许所有用户访问 **/
-		http.authorizeRequests().antMatchers("/mobile/**", "/register", "/forget").permitAll()
-				/** 其他地址的访问均需验证权限 **/
-				.anyRequest().authenticated().and()
-				/** 指定登录页是"/login" **/
-				.formLogin().loginPage("/login")
-				/** 登录成功后默认跳转到"home" **/
-				.defaultSuccessUrl("/home")
-				/** 退出登录后的默认url是"/home" **/
-				.permitAll().and().logout().logoutSuccessUrl("/login").permitAll();
+		http.authorizeRequests()
+        .anyRequest().authenticated()
+        .and().formLogin().loginPage("/login").usernameParameter("loginUsername").passwordParameter("loginPassword")
+        .failureUrl("/login?error=true").defaultSuccessUrl("/home").permitAll()
+        .and()
+        .logout().permitAll();
 	}
 
 	@Override

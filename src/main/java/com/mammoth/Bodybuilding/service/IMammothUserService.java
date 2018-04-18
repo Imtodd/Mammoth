@@ -25,17 +25,6 @@ public interface IMammothUserService {
 	ResultObj registUser(SysUserObj user, Object... objects);
 
 	/**
-	 * 登录接口
-	 * 
-	 * @param loginName
-	 *            用户名
-	 * @param password
-	 *            密码
-	 * @return
-	 */
-	ResultObj LoginUser(String loginName, String password);
-
-	/**
 	 * 忘记密码
 	 * 
 	 * @param loginName

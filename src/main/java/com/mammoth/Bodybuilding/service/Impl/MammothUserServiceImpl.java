@@ -1,6 +1,7 @@
 package com.mammoth.Bodybuilding.service.Impl;
 
 import java.util.Date;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +12,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
+import com.mammoth.Bodybuilding.entity.SysRole;
 import com.mammoth.Bodybuilding.entity.SysUserObj;
+import com.mammoth.Bodybuilding.respository.IRoleRepository;
 import com.mammoth.Bodybuilding.respository.IUserRepository;
 import com.mammoth.Bodybuilding.service.IMammothUserService;
 import com.mammoth.Bodybuilding.util.ClientType;
@@ -38,6 +41,11 @@ public class MammothUserServiceImpl implements IMammothUserService, UserDetailsS
 	@Autowired
 	private IUserRepository userRespository;
 
+	/** 注入角色数据仓库 **/
+	@Autowired
+	private IRoleRepository roleRespository;
+	
+	
 	/**
 	 * 注册用户接口
 	 * 
@@ -109,6 +117,10 @@ public class MammothUserServiceImpl implements IMammothUserService, UserDetailsS
 				user.setCreateTime(new Date());
 				/** 设置默认头像 **/
 				user.setHeadIMG("/global/assets/img/ui-sam.jpg");
+				/**查找权限**/
+				List<SysRole> rolses = roleRespository.findAll();
+				/**设置权限**/
+				user.setSysRoles(rolses);
 				SysUserObj save = userRespository.save(user);
 				resultObj.setCode(1);
 				resultObj.setFlag(true);
@@ -138,21 +150,6 @@ public class MammothUserServiceImpl implements IMammothUserService, UserDetailsS
 			throw new UsernameNotFoundException("用户名不存在");
 		}
 		return sysUser;
-	}
-
-	/**
-	 * 登录接口
-	 * 
-	 * @param loginName
-	 *            用户名
-	 * @param password
-	 *            密码
-	 * @return
-	 */
-	@Override
-	public ResultObj LoginUser(String loginName, String password) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	/**

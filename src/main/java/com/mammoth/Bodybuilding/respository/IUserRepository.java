@@ -20,7 +20,7 @@ import com.mammoth.Bodybuilding.entity.SysUserObj;
  * @date 2018年4月16日 下午5:01:47
  */
 @Repository
-@Table(name = "MAMMOTH_BODYBUILDING_USER")
+@Table(name = "SYS_USER")
 @Qualifier("userRespository")
 public interface IUserRepository extends JpaRepository<SysUserObj, Long> {
 	/**

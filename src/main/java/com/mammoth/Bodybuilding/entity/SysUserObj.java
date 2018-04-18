@@ -34,7 +34,7 @@ import org.springframework.security.core.userdetails.UserDetails;
  * @date 2018年4月13日 上午10:39:24
  */
 @Entity
-@Table(name = "MAMMOTH_BODYBUILDING_USER")
+@Table(name = "SYS_USER")
 public class SysUserObj implements Serializable, UserDetails {
 
 	/**

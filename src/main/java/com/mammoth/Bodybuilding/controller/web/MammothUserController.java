@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mammoth.Bodybuilding.entity.SysUserObj;
@@ -39,14 +39,27 @@ public class MammothUserController {
 	 * 
 	 * @return 首页映射
 	 */
-	@ApiOperation(value = "登录页面", notes = "pc端首页位置")
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String loginPage(Model model) {
+	@ApiOperation(value = "后台登录页面", notes = "pc端首页位置")
+	@GetMapping(value = {"/","/login"})
+	public String indexPage(Model model) {
 		model.addAttribute("user", new SysUserObj());
 		model.addAttribute("resultObj", null);
 		return "login";
 	}
 
+	/**
+	 * 后台登录后跳转首页
+	 * 
+	 * @param model
+	 *            request对象
+	 * @return
+	 */
+	@ApiOperation(value = "后台首页", notes = "后台首页位置")
+	@GetMapping(value = "/home")
+	public String homePage(Model model) {
+		System.out.println("我跳");
+		return "home";
+	}
 	/**
 	 * 注册接口
 	 * 
@@ -61,7 +74,7 @@ public class MammothUserController {
 	 * @return
 	 */
 	@ApiOperation(value = "注册接口", notes = "注册请求接口")
-	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	@PostMapping(value = "/register")
 	public String register(@ModelAttribute @Valid SysUserObj user, BindingResult result, @RequestParam String checkPass,
 			Model model) {
 		/** 调用service **/
@@ -73,30 +86,6 @@ public class MammothUserController {
 	};
 
 	/**
-	 * 登录接口
-	 * 
-	 * @param loginUsername
-	 *            用户名
-	 * @param loginPassword
-	 *            密码
-	 * @param model
-	 *            request对象
-	 * @return
-	 */
-	@ApiOperation(value = "登录接口", notes = "登陆请求接口")
-	@RequestMapping(value = "login", method = RequestMethod.POST)
-	public String login(@RequestParam String loginUsername, @RequestParam String loginPassword, Model model) {
-		ResultObj resultObj = userService.LoginUser(loginUsername, loginPassword);
-		if (resultObj.isFlag()) {
-			model.addAttribute("user", new SysUserObj());
-			model.addAttribute("resultObj", resultObj);
-			return "login";
-		} else {
-			return "home";
-		}
-	}
-
-	/**
 	 * 忘记密码接口
 	 * 
 	 * @param userNameForget
@@ -106,7 +95,7 @@ public class MammothUserController {
 	 * @return
 	 */
 	@ApiOperation(value = "忘记密码", notes = "忘记密码请求接口")
-	@RequestMapping(value = "forget", method = RequestMethod.POST)
+	@PostMapping(value = "forget")
 	public String forget(@RequestParam String userNameForget, Model model) {
 		ResultObj resultObj = userService.forgetPassword(userNameForget);
 		model.addAttribute("user", new SysUserObj());

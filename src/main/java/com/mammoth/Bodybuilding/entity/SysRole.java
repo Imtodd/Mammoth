@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * 
@@ -17,6 +18,7 @@ import javax.persistence.Id;
  * @date 2018年4月16日 下午11:28:50
  */
 @Entity
+@Table(name="SYS_ROLE")
 public class SysRole implements Serializable {
 
 	/**
