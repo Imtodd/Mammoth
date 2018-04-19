@@ -55,7 +55,7 @@ public class MammothUserController {
 	 * @return
 	 */
 	@ApiOperation(value = "后台首页", notes = "后台首页位置")
-	@GetMapping(value = {"/","/home"})
+	@GetMapping(value = "/")
 	public String homePage(Model model) {
 		System.out.println("我跳");
 		return "home";

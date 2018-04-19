@@ -59,14 +59,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests().antMatchers("/login","/register","/forget").permitAll().antMatchers("/mobile/**").hasRole("MOBILE")
         .anyRequest().authenticated()
         .and().formLogin().loginPage("/login").usernameParameter("loginUsername").passwordParameter("loginPassword")
-        //设置默认登录成功跳转页面
-        .defaultSuccessUrl("/home").failureUrl("/login?error=true").permitAll()
+        .failureUrl("/login?error=true").permitAll()
         .and()
         .logout()
-        //默认注销行为为logout，可以通过下面的方式来修改
-        //.logoutUrl("/logout")
-        //设置注销成功后跳转页面，默认是跳转到登录页面
-        //.logoutSuccessUrl("")
         .permitAll();
 	}
 	/**

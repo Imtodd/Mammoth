@@ -187,9 +187,11 @@
                 <!--  notification end -->
             </div>
             <div class="top-menu">
+            <form th:action="@{/logout}" method="post">
             	<ul class="nav pull-right top-menu">
-                    <li><a class="logout" href="login.html">Logout</a></li>
+                    <li><button class="logout">注销</button></li>
             	</ul>
+            	</form>
             </div>
         </header>
       <!--header end-->
