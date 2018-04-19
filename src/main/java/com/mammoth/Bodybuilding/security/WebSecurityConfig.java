@@ -1,6 +1,5 @@
 package com.mammoth.Bodybuilding.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -9,8 +8,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.session.SessionRegistry;
-import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -36,15 +33,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		return new MammothUserServiceImpl();
 	}
 
-	@Bean
-	public SessionRegistry getSessionRegistry() {
-		SessionRegistry sessionRegistry = new SessionRegistryImpl();
-		return sessionRegistry;
-	}
-
-	@Autowired
-	SessionRegistry sessionRegistry;
-
+	/**
+	 * 登录验证
+	 */
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(customerUserService()).passwordEncoder(new PasswordEncoder() {
@@ -60,21 +51,32 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			}
 		});
 	}
-
+	/**
+	 * 配置
+	 */
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests()
+		http.authorizeRequests().antMatchers("/login","/register","/forget").permitAll().antMatchers("/mobile/**").hasRole("MOBILE")
         .anyRequest().authenticated()
         .and().formLogin().loginPage("/login").usernameParameter("loginUsername").passwordParameter("loginPassword")
-        .failureUrl("/login?error=true").defaultSuccessUrl("/home").permitAll()
+        //设置默认登录成功跳转页面
+        .defaultSuccessUrl("/home").failureUrl("/login?error=true").permitAll()
         .and()
-        .logout().permitAll();
+        .logout()
+        //默认注销行为为logout，可以通过下面的方式来修改
+        //.logoutUrl("/logout")
+        //设置注销成功后跳转页面，默认是跳转到登录页面
+        //.logoutSuccessUrl("")
+        .permitAll();
 	}
-
+	/**
+	 * 静态资源配置
+	 */
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		/** 解决静态资源被拦截的问题 **/
 		web.ignoring().antMatchers("/global/**", "/webjars/**", "/v2/api-docs", "/swagger-resources/configuration/ui",
 				"/swagger-resources", "/swagger-resources/configuration/security", "/swagger-ui.html");
 	}
+
 }

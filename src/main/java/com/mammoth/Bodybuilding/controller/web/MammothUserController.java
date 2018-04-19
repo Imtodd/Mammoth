@@ -40,7 +40,7 @@ public class MammothUserController {
 	 * @return 首页映射
 	 */
 	@ApiOperation(value = "后台登录页面", notes = "pc端首页位置")
-	@GetMapping(value = {"/","/login"})
+	@GetMapping(value ="/login")
 	public String indexPage(Model model) {
 		model.addAttribute("user", new SysUserObj());
 		model.addAttribute("resultObj", null);
@@ -55,7 +55,7 @@ public class MammothUserController {
 	 * @return
 	 */
 	@ApiOperation(value = "后台首页", notes = "后台首页位置")
-	@GetMapping(value = "/home")
+	@GetMapping(value = {"/","/home"})
 	public String homePage(Model model) {
 		System.out.println("我跳");
 		return "home";
@@ -95,7 +95,7 @@ public class MammothUserController {
 	 * @return
 	 */
 	@ApiOperation(value = "忘记密码", notes = "忘记密码请求接口")
-	@PostMapping(value = "forget")
+	@PostMapping(value = "/forget")
 	public String forget(@RequestParam String userNameForget, Model model) {
 		ResultObj resultObj = userService.forgetPassword(userNameForget);
 		model.addAttribute("user", new SysUserObj());
