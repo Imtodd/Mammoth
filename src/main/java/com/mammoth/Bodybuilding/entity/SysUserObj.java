@@ -61,7 +61,7 @@ public class SysUserObj implements Serializable, UserDetails {
 	/** 手机号码 **/
 	private String phoneNum;
 	/** 身份证号码 **/
-	private String IDCard;
+	private String cardID;
 	/** 邮箱地址 **/
 	@Email(message = "警告!电子邮件格式不正确")
 	private String email;
@@ -79,7 +79,7 @@ public class SysUserObj implements Serializable, UserDetails {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date birthday;
 	/** 终端类型 **/
-	private String ClientType;
+	private String clientType;
 	/** 扩展字段1 **/
 	private String ext1;
 	/** 扩展字段2 **/
@@ -149,7 +149,7 @@ public class SysUserObj implements Serializable, UserDetails {
 	 */
 	public SysUserObj(Long id, @NotEmpty(message = "用户名不能为空") String loginName,
 			@NotEmpty(message = "密码不能为空") @Length(min = 8, message = "密码长度不能少于8位") String password, String nickName,
-			String surName, String fullName, String phoneNum, String iDCard, @Email(message = "电子邮件格式不正确") String email,
+			String surName, String fullName, String phoneNum, String cardID, @Email(message = "电子邮件格式不正确") String email,
 			String headIMG, String introduce, Date createTime, Date updateTime, Date birthday, String clientType,
 			String ext1, String ext2, String ext3, String ext4, String ext5, List<SysRole> sysRoles) {
 		super();
@@ -160,14 +160,14 @@ public class SysUserObj implements Serializable, UserDetails {
 		this.surName = surName;
 		this.fullName = fullName;
 		this.phoneNum = phoneNum;
-		IDCard = iDCard;
+		this.cardID = cardID;
 		this.email = email;
 		this.headIMG = headIMG;
 		this.introduce = introduce;
 		this.createTime = createTime;
 		this.updateTime = updateTime;
 		this.birthday = birthday;
-		ClientType = clientType;
+		this.clientType = clientType;
 		this.ext1 = ext1;
 		this.ext2 = ext2;
 		this.ext3 = ext3;
@@ -240,8 +240,8 @@ public class SysUserObj implements Serializable, UserDetails {
 		return phoneNum;
 	}
 
-	public String getIDCard() {
-		return IDCard;
+	public String getCardID() {
+		return cardID;
 	}
 
 	public String getEmail() {
@@ -269,7 +269,7 @@ public class SysUserObj implements Serializable, UserDetails {
 	}
 
 	public String getClientType() {
-		return ClientType;
+		return clientType;
 	}
 
 	public String getExt1() {
@@ -324,8 +324,8 @@ public class SysUserObj implements Serializable, UserDetails {
 		this.phoneNum = phoneNum;
 	}
 
-	public void setIDCard(String iDCard) {
-		IDCard = iDCard;
+	public void setIDCard(String cardID) {
+		this.cardID = cardID;
 	}
 
 	public void setEmail(String email) {
@@ -353,7 +353,7 @@ public class SysUserObj implements Serializable, UserDetails {
 	}
 
 	public void setClientType(String clientType) {
-		ClientType = clientType;
+		this.clientType = clientType;
 	}
 
 	public void setExt1(String ext1) {
@@ -380,13 +380,25 @@ public class SysUserObj implements Serializable, UserDetails {
 		this.sysRoles = sysRoles;
 	}
 
+	
+
+	@Override
+	public String toString() {
+		return "SysUserObj [id=" + id + ", loginName=" + loginName + ", password=" + password + ", nickName=" + nickName
+				+ ", surName=" + surName + ", fullName=" + fullName + ", phoneNum=" + phoneNum + ", IDCard=" + cardID
+				+ ", email=" + email + ", headIMG=" + headIMG + ", introduce=" + introduce + ", createTime="
+				+ createTime + ", updateTime=" + updateTime + ", birthday=" + birthday + ", ClientType=" + clientType
+				+ ", ext1=" + ext1 + ", ext2=" + ext2 + ", ext3=" + ext3 + ", ext4=" + ext4 + ", ext5=" + ext5
+				+ ", sysRoles=" + sysRoles + "]";
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((ClientType == null) ? 0 : ClientType.hashCode());
-		result = prime * result + ((IDCard == null) ? 0 : IDCard.hashCode());
 		result = prime * result + ((birthday == null) ? 0 : birthday.hashCode());
+		result = prime * result + ((cardID == null) ? 0 : cardID.hashCode());
+		result = prime * result + ((clientType == null) ? 0 : clientType.hashCode());
 		result = prime * result + ((createTime == null) ? 0 : createTime.hashCode());
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + ((ext1 == null) ? 0 : ext1.hashCode());
@@ -417,20 +429,20 @@ public class SysUserObj implements Serializable, UserDetails {
 		if (getClass() != obj.getClass())
 			return false;
 		SysUserObj other = (SysUserObj) obj;
-		if (ClientType == null) {
-			if (other.ClientType != null)
-				return false;
-		} else if (!ClientType.equals(other.ClientType))
-			return false;
-		if (IDCard == null) {
-			if (other.IDCard != null)
-				return false;
-		} else if (!IDCard.equals(other.IDCard))
-			return false;
 		if (birthday == null) {
 			if (other.birthday != null)
 				return false;
 		} else if (!birthday.equals(other.birthday))
+			return false;
+		if (cardID == null) {
+			if (other.cardID != null)
+				return false;
+		} else if (!cardID.equals(other.cardID))
+			return false;
+		if (clientType == null) {
+			if (other.clientType != null)
+				return false;
+		} else if (!clientType.equals(other.clientType))
 			return false;
 		if (createTime == null) {
 			if (other.createTime != null)
@@ -523,16 +535,6 @@ public class SysUserObj implements Serializable, UserDetails {
 		} else if (!updateTime.equals(other.updateTime))
 			return false;
 		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "SysUserObj [id=" + id + ", loginName=" + loginName + ", password=" + password + ", nickName=" + nickName
-				+ ", surName=" + surName + ", fullName=" + fullName + ", phoneNum=" + phoneNum + ", IDCard=" + IDCard
-				+ ", email=" + email + ", headIMG=" + headIMG + ", introduce=" + introduce + ", createTime="
-				+ createTime + ", updateTime=" + updateTime + ", birthday=" + birthday + ", ClientType=" + ClientType
-				+ ", ext1=" + ext1 + ", ext2=" + ext2 + ", ext3=" + ext3 + ", ext4=" + ext4 + ", ext5=" + ext5
-				+ ", sysRoles=" + sysRoles + "]";
 	}
 
 }

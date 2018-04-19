@@ -9,5 +9,16 @@ package com.mammoth.Bodybuilding.util;
  * @date 2018年4月16日 下午5:25:08
  */
 public enum ClientType {
-	MOBILEUSERTYPE, MOBILESERVERTYPE, PCMANAGETYPE
+	/**
+	 * 移动端普通用户
+	 */
+	MOBILEUSERTYPE,
+	/**
+	 * 移动端服务用户
+	 */
+	MOBILESERVERTYPE,
+	/**
+	 * pc端管理用户
+	 */
+	PCMANAGETYPE
 }
